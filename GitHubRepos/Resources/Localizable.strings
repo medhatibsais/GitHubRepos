@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  GitHubRepos
+
+  Created by Medhat Ibsais on 05/01/2024.
+  
+*/
+
+/// Alerts
+"alerts.actions.ok.title"                               = "OK";
