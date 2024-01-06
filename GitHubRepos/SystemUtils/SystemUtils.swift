@@ -6,25 +6,9 @@
 //
 
 import UIKit
-import Alamofire
 
 /// System Utils
 class SystemUtils {
-    
-    /// Request Status
-    enum RequestStatus {
-        case success
-        case failed
-        case loading
-    }
-    
-    /// Network reachability manager
-    private static let networkReachabilityManager: NetworkReachabilityManager = NetworkReachabilityManager()!
-    
-    /// Is network reachable
-    static var isNetworkReachable: Bool {
-        return Self.networkReachabilityManager.isReachable
-    }
     
     /**
      Response JSON serializer

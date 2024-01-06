@@ -24,7 +24,7 @@ class FavoriteRepositoriesViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Favorite Repositories"
+        self.title = "Favorites"
         
         self.viewModel = FavoriteRepositoriesViewModel()
         

@@ -43,7 +43,6 @@
 		14C7B5502B48448E007904DE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7B54F2B48448E007904DE /* User.swift */; };
 		14C7B5542B485AD1007904DE /* RepositoriesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7B5532B485AD1007904DE /* RepositoriesListViewController.swift */; };
 		14C7B5582B485C0E007904DE /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7B5572B485C0E007904DE /* BaseViewController.swift */; };
-		14C7B55B2B485C6F007904DE /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7B55A2B485C6F007904DE /* TabBarViewController.swift */; };
 		14C7B55D2B485EE1007904DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14C7B55C2B485EE1007904DE /* Main.storyboard */; };
 		14C7B5622B48636F007904DE /* RepositoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7B5602B48636F007904DE /* RepositoryTableViewCell.swift */; };
 		14C7B5632B48636F007904DE /* RepositoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14C7B5612B48636F007904DE /* RepositoryTableViewCell.xib */; };
@@ -91,7 +90,6 @@
 		14C7B54F2B48448E007904DE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		14C7B5532B485AD1007904DE /* RepositoriesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesListViewController.swift; sourceTree = "<group>"; };
 		14C7B5572B485C0E007904DE /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		14C7B55A2B485C6F007904DE /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		14C7B55C2B485EE1007904DE /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		14C7B5602B48636F007904DE /* RepositoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTableViewCell.swift; sourceTree = "<group>"; };
 		14C7B5612B48636F007904DE /* RepositoryTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RepositoryTableViewCell.xib; sourceTree = "<group>"; };
@@ -373,7 +371,6 @@
 			children = (
 				147FB5E72B498637005DED7F /* FavoriteRepositoriesViewController */,
 				147FB5CD2B495571005DED7F /* DetailsViewController */,
-				14C7B5592B485C62007904DE /* TabBarViewController */,
 				14C7B5562B485BFE007904DE /* BaseViewController */,
 				14C7B5522B485ABB007904DE /* RepositoriesListViewController */,
 			);
@@ -405,14 +402,6 @@
 				14C7B5572B485C0E007904DE /* BaseViewController.swift */,
 			);
 			path = BaseViewController;
-			sourceTree = "<group>";
-		};
-		14C7B5592B485C62007904DE /* TabBarViewController */ = {
-			isa = PBXGroup;
-			children = (
-				14C7B55A2B485C6F007904DE /* TabBarViewController.swift */,
-			);
-			path = TabBarViewController;
 			sourceTree = "<group>";
 		};
 		14C7B55E2B486340007904DE /* TableViewCells */ = {
@@ -595,7 +584,6 @@
 				147FB5F32B4998A9005DED7F /* Searchable.swift in Sources */,
 				147FB5CF2B495589005DED7F /* DetailsViewController.swift in Sources */,
 				14C7B5482B482A65007904DE /* RepositoriesRouter.swift in Sources */,
-				14C7B55B2B485C6F007904DE /* TabBarViewController.swift in Sources */,
 				147FB5E92B49864A005DED7F /* FavoriteRepositoriesViewController.swift in Sources */,
 				14C7B5622B48636F007904DE /* RepositoryTableViewCell.swift in Sources */,
 				147FB5E62B496C06005DED7F /* FavoriteRepositoriesCachingManager.swift in Sources */,

@@ -28,6 +28,8 @@ extension RepositoriesListViewController {
             }
             
             self.showLoadingView(false)
+            
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
 }

@@ -37,14 +37,16 @@ class RepositoriesListViewController: BaseViewController {
         
         self.setupSearchBar()
         
-        
-        self.showLoadingView(true)
-        
         let date = self.calendar.date(byAdding: .month, value: -1, to: Date()) ?? Date()
         
         self.viewModel.updateSelectedDate(date: date)
         
-        self.loadRepositories(for: date)
+        if NetworkingManager.shared.isNetworkReachable {
+         
+            self.showLoadingView(true)
+            
+            self.loadRepositories(for: date)
+        }
     }
     
     /**
@@ -69,12 +71,14 @@ class RepositoriesListViewController: BaseViewController {
     
     private func setupBarButtonItems() {
         
-        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), style: .plain, target: self, action: #selector(self.didClickRightBarButtonItem))
+        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), style: .plain, target: self, action: #selector(self.didClickRightBarButtonItem(_:)))
+        
+        rightBarButtonItem.isEnabled = false
         
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
-    @objc private func didClickRightBarButtonItem() {
+    @objc private func didClickRightBarButtonItem(_ sender: UIBarButtonItem) {
         
         let actionSheet = UIAlertController(title: "Select period", message: "Choose the date creation for your presented information", preferredStyle: .actionSheet)
         
@@ -89,6 +93,8 @@ class RepositoriesListViewController: BaseViewController {
             let date = self.calendar.date(byAdding: .day, value: -1, to: Date()) ?? Date()
             
             self.viewModel.updateSelectedDate(date: date)
+            
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             
             self.loadRepositories(for: date)
         }))
@@ -105,6 +111,8 @@ class RepositoriesListViewController: BaseViewController {
             
             self.viewModel.updateSelectedDate(date: date)
             
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            
             self.loadRepositories(for: date)
         }))
         
@@ -120,10 +128,19 @@ class RepositoriesListViewController: BaseViewController {
             
             self.viewModel.updateSelectedDate(date: date)
             
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            
             self.loadRepositories(for: date)
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        if #available(iOS 16.0, *) {
+            actionSheet.popoverPresentationController?.sourceItem = sender
+        } else {
+            // Fallback on earlier versions
+            actionSheet.popoverPresentationController?.barButtonItem = sender
+        }
         
         self.present(actionSheet, animated: true)
 
@@ -164,6 +181,27 @@ class RepositoriesListViewController: BaseViewController {
         
         // Set delegate
         self.searchBar.delegate = self
+    }
+    
+    // MARK: - Notifications
+    
+    override func handleNotifications(_ notification: NSNotification) {
+        
+        if notification.name.rawValue == NetworkingManager.Notifications.connectionEstablished.rawValue {
+            
+            if self.viewModel.handleInternetConnectionBack() {
+                self.loadRepositories(for: self.viewModel.selectedDate)
+            }
+        }
+        else if notification.name.rawValue == NetworkingManager.Notifications.connectionLost.rawValue {
+            
+            if self.viewModel.handleNoInternetConnection() {
+                self.tableView.reloadData()
+            }
+            else {
+                super.handleNotifications(notification)
+            }
+        }
     }
     
     // MARK: - Keyboard Notifications

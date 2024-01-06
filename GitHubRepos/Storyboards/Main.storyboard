@@ -144,7 +144,7 @@
         <scene sceneID="gXb-Cw-4M5">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="u7Q-18-Wpq" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Repositories" id="Mpn-DJ-JDz"/>
+                    <tabBarItem key="tabBarItem" title="Repositories" image="folder.fill" catalog="system" id="Mpn-DJ-JDz"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="rre-5R-WRO">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -159,11 +159,11 @@
             </objects>
             <point key="canvasLocation" x="585.49618320610682" y="-676.05633802816908"/>
         </scene>
-        <!--Favorite-->
+        <!--Favorites-->
         <scene sceneID="jZi-bI-bEE">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Icv-P0-VSZ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Favorite" id="HYj-dn-h8d"/>
+                    <tabBarItem key="tabBarItem" title="Favorites" image="star.fill" catalog="system" id="HYj-dn-h8d"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="PPC-Co-a8E">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -180,6 +180,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="folder.fill" catalog="system" width="128" height="96"/>
+        <image name="star.fill" catalog="system" width="128" height="116"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -99,6 +99,10 @@ class BaseViewController: UIViewController {
         }
     }
     
+    func getTabBarController() -> UITabBarController? {
+        return self.tabBarController
+    }
+    
     // MARK: - Notifications
     
     /**
@@ -117,6 +121,9 @@ class BaseViewController: UIViewController {
      */
     @objc func handleNotifications(_ notification: NSNotification) {
         
-        
+        if notification.name.rawValue == NetworkingManager.Notifications.connectionLost.rawValue {
+            
+            SystemUtils.showMessageAlert(title: "Connection Lost", message: "Internet connection Lost")
+        }
     }
 }

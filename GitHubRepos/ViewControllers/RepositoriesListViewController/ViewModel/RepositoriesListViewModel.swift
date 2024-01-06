@@ -51,7 +51,7 @@ class RepositoriesListViewModel {
         }
         
         // Add loading cell if we have a connection
-        if SystemUtils.isNetworkReachable, !self.representables.isEmpty, hasMoreData {
+        if NetworkingManager.shared.isNetworkReachable, !self.representables.isEmpty, hasMoreData {
             self.representables.append(LoadingTableViewCellRepresentable())
         }
         
@@ -179,5 +179,26 @@ class RepositoriesListViewModel {
      */
     func didSelectRepresentable(at indexPath: IndexPath) -> Repository? {
         return self.getRepository(at: indexPath)
+    }
+    
+    func handleNoInternetConnection() -> Bool {
+        
+        if self.representables.isEmpty || self.representables.first is LoadingTableViewCellRepresentable || self.representables.first is EmptyTableViewCellRepresentable {
+        
+            self.representables = [EmptyTableViewCellRepresentable(title: "No internet connection, you still can go to favorites tab if you have added some")]
+            
+            return true
+        }
+        
+        return false
+    }
+    
+    func handleInternetConnectionBack() -> Bool {
+        
+        if self.representables.isEmpty || self.representables.first is LoadingTableViewCellRepresentable || self.representables.first is EmptyTableViewCellRepresentable {
+            return true
+        }
+        
+        return false
     }
 }
