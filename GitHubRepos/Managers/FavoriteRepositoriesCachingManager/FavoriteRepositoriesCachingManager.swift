@@ -85,10 +85,17 @@ class FavoriteRepositoriesCachingManager {
         }
     }
     
+    /**
+     Monitor repositories updates
+     - Parameter completion: Completion block
+     - Returns: AnyCancellable
+     */
     func monitorRepositoriesUpdates(completion: @escaping ([Repository]) -> Void) -> AnyCancellable {
         
+        // Listen to repositories updates
         self.$repositories.sink { repositories in
             
+            // Call completion in main thread
             DispatchQueue.main.async {
                 completion(repositories)
             }

@@ -10,21 +10,35 @@ import UIKit
 /// Details View Model
 class DetailsViewModel {
     
+    /// Representables
     private var representables: [TableViewCellRepresentable]
     
+    /// Repository
     private var repository: Repository
     
+    /**
+     Initializer
+     - Parameter repository: Repository
+     */
     init(repository: Repository) {
+        
+        // Default values
         self.representables = []
         self.repository = repository
         
+        // Build representables
         self.buildRepresentables()
     }
     
+    /**
+     Build representables
+     */
     private func buildRepresentables() {
         
+        // Clear all representables
         self.representables.removeAll()
         
+        // Add details cell representable
         self.representables.append(DetailsTableViewCellRepresentable(repository: self.repository))
     }
     

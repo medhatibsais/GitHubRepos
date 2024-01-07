@@ -35,9 +35,14 @@ extension RepositoriesListViewController: UISearchBarDelegate {
 // MARK: - Details View Controller Delegate
 extension RepositoriesListViewController: DetailsViewControllerDelegate {
     
-    
+    /**
+     Did update favorite status for
+     - Parameter repository: Repository
+     - Parameter indexPath: IndexPath
+     */
     func detailsViewController(didUpdateFavoriteStatusFor repository: Repository, at indexPath: IndexPath) {
         
+        // Update repository
         self.viewModel.updateRepository(repository: repository, at: indexPath)
     }
 }

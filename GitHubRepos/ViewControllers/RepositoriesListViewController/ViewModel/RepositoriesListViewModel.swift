@@ -10,19 +10,30 @@ import UIKit
 /// Repositories List View Model
 class RepositoriesListViewModel {
     
+    /// Representables
     private var representables: [TableViewCellRepresentable]
     
+    /// Filtered representables
     private var filteredRepresentables: [TableViewCellRepresentable]
     
+    /// Repositories
     private var repositories: [Repository]
     
+    /// Search text
     private var searchText: String
     
+    /// Next page number
     private(set) var nextPageNumber: Int
     
+    /// Selected date
     private(set) var selectedDate: Date
     
+    /**
+     Initializer
+     */
     init() {
+        
+        // Default values
         self.representables = []
         self.filteredRepresentables = []
         self.repositories = []
@@ -31,22 +42,33 @@ class RepositoriesListViewModel {
         self.selectedDate = Date()
     }
     
+    /**
+     Build representables
+     - Parameter index: Int
+     - Parameter hasMoreData: Bool
+     */
     private func buildRepresentables(from index: Int = 0, hasMoreData: Bool) {
         
+        // Clear all representables if index is 0
         if index == 0 {
-         
             self.representables.removeAll()
         }
+        
+        // Remove last representable if representables list is not empty
         else if !self.representables.isEmpty {
             self.representables.removeLast()
         }
         
+        // Iterate over each repository
         for (itemIndex, repository) in self.repositories.enumerated() where index <= itemIndex {
             
+            // Representable
             let representable = RepositoryTableViewCellRepresentable(repository: repository)
             
+            // Set item data index
             representable.itemDataIndex = itemIndex
             
+            // Append representable
             self.representables.append(representable)
         }
         
@@ -57,54 +79,84 @@ class RepositoriesListViewModel {
         
         // Add empty cell if the list is empty
         if self.representables.isEmpty {
-            self.representables = [EmptyTableViewCellRepresentable(title: NSLocalizedString("usersListViewController.noUsersYet", comment: ""))]
+            self.representables = [EmptyTableViewCellRepresentable(title: NSLocalizedString("repositoriesListViewController.noDataYet.message", comment: ""))]
         }
         
+        // Filter content
         self.filterContent(searchText: self.searchText)
     }
     
+    /**
+     Set data
+     - Parameter repositories: [Repository]
+     */
     func setData(repositories: [Repository]) {
         
+        // Increment next page number
         self.nextPageNumber += 1
         
+        // Current items count
         let currentItemsCount = self.repositories.count
         
+        // Append new list
         self.repositories.append(contentsOf: repositories)
         
+        // Has more data
         let hasMoreData = repositories.count >= RepositoriesModel.maximumItemsPerPage
         
+        // Build representables
         self.buildRepresentables(from: currentItemsCount, hasMoreData: hasMoreData)
     }
     
+    /**
+     Update selected date
+     - Parameter date: Date
+     */
     func updateSelectedDate(date: Date) {
         self.selectedDate = date
     }
     
+    /**
+     Update repository
+     - Parameter repository: Repository
+     - Parameter indexPath: IndexPath
+     */
     func updateRepository(repository: Repository, at indexPath: IndexPath) {
         
-        // Get representable
+        // Update repository
         if let representable = self.representableForRow(at: indexPath) as? RepositoryTableViewCellRepresentable, representable.itemDataIndex < self.repositories.count {
             self.repositories[representable.itemDataIndex] = repository
         }
     }
     
-    
+    /**
+     Set search text
+     - Parameter text: String
+     */
     func setSearchText(text: String) {
         
+        // Set search text
         self.searchText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         
+        // Filter content
         self.filterContent(searchText: self.searchText)
     }
     
+    /**
+     Filter content
+     - Parameter searchText: String
+     */
     private func filterContent(searchText: String) {
         
+        // Check if text is not empty
         guard !self.searchText.isEmpty else { return }
         
+        // Get filtered representables
         self.filteredRepresentables = self.representables.filter({ ($0 as? RepositoryTableViewCellRepresentable)?.search(text: searchText) ?? false })
         
         // Add empty cell if the list is empty
         if self.filteredRepresentables.isEmpty {
-            self.filteredRepresentables = [EmptyTableViewCellRepresentable(title: String(format: NSLocalizedString("usersListViewController.search.noResults", comment: ""), self.searchText))]
+            self.filteredRepresentables = [EmptyTableViewCellRepresentable(title: String(format: NSLocalizedString("repositoriesListViewController.search.noResults.message", comment: ""), self.searchText))]
         }
     }
     
@@ -123,12 +175,15 @@ class RepositoriesListViewModel {
         return nil
     }
     
+    /**
+     Reset
+     */
     func reset() {
         
+        // Clear all data
         self.repositories.removeAll()
         self.representables.removeAll()
         self.filteredRepresentables.removeAll()
-        self.searchText = ""
     }
     
     /**
@@ -181,11 +236,17 @@ class RepositoriesListViewModel {
         return self.getRepository(at: indexPath)
     }
     
+    /**
+     Handle no internet connection
+     - Returns: Bool
+     */
     func handleNoInternetConnection() -> Bool {
         
+        // Check if representables is empty or, first representable is loading cell or empty cell, then handle showing some info, because data is not appearing on view yet
         if self.representables.isEmpty || self.representables.first is LoadingTableViewCellRepresentable || self.representables.first is EmptyTableViewCellRepresentable {
         
-            self.representables = [EmptyTableViewCellRepresentable(title: "No internet connection, you still can go to favorites tab if you have added some")]
+            // Add empty cell with title
+            self.representables = [EmptyTableViewCellRepresentable(title: NSLocalizedString("repositoriesListViewController.internetLost.message", comment: ""))]
             
             return true
         }
@@ -193,8 +254,13 @@ class RepositoriesListViewModel {
         return false
     }
     
+    /**
+     Handle internet connection back
+     - Returns: Bool
+     */
     func handleInternetConnectionBack() -> Bool {
         
+        // Check if representables is empty or, first representable is loading cell or empty cell, then handle showing some info, because data is not appearing on view yet
         if self.representables.isEmpty || self.representables.first is LoadingTableViewCellRepresentable || self.representables.first is EmptyTableViewCellRepresentable {
             return true
         }

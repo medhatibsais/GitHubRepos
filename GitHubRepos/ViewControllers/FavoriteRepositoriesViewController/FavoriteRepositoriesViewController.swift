@@ -11,37 +11,55 @@ import Combine
 /// Favorite Repositories View Controller
 class FavoriteRepositoriesViewController: BaseViewController {
     
+    /// Search bar
     @IBOutlet private weak var searchBar: UISearchBar!
     
+    /// Table view
     @IBOutlet private(set) weak var tableView: UITableView!
     
+    /// Table view bottom constraint
     @IBOutlet private weak var tableViewBottomConstraint: NSLayoutConstraint!
     
+    /// View model
     private(set) var viewModel: FavoriteRepositoriesViewModel!
     
-    var favoriteRepositoriesListener: AnyCancellable?
+    /// Favorite repositories listener
+    private var favoriteRepositoriesListener: AnyCancellable?
     
+    /**
+     View did load
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Favorites"
+        // Set title
+        self.title = NSLocalizedString("favoriteRepositoriesViewController.title", comment: "")
         
+        // Init view model
         self.viewModel = FavoriteRepositoriesViewModel()
         
+        // Setup table view
         self.setupTableView()
         
+        // Setup search bar
         self.setupSearchBar()
         
+        // Show loading view
         self.showLoadingView(true)
         
+        // Setup listener
         self.favoriteRepositoriesListener = FavoriteRepositoriesCachingManager.shared.monitorRepositoriesUpdates(completion: { [weak self] repositories in
             
+            // self
             guard let self = self else { return }
             
+            // Set data
             self.viewModel.setData(repositories: repositories)
             
+            // Reload table view
             self.tableView.reloadData()
             
+            // Hide loading view
             self.showLoadingView(false)
         })
     }
@@ -64,11 +82,6 @@ class FavoriteRepositoriesViewController: BaseViewController {
         
         // Unregister for keyboard notifications
         self.unregisterForKeyboardNotifications()
-    }
-    
-    
-    deinit {
-        self.favoriteRepositoriesListener?.cancel()
     }
     
     /**
@@ -95,17 +108,19 @@ class FavoriteRepositoriesViewController: BaseViewController {
     private func setupSearchBar() {
         
         // Setup search bar
-//        self.searchBar.barTintColor = .black
-//        self.searchBar.searchTextField.backgroundColor = .black
-        self.searchBar.searchTextField.textColor = .white
-        self.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("usersListViewController.searchBar.placeholder", comment: ""), attributes: [.foregroundColor: UIColor.white.withAlphaComponent(0.7)])
-        
-        if let searchImageView = self.searchBar.searchTextField.leftView as? UIImageView {
-            searchImageView.tintColor = UIColor.white.withAlphaComponent(0.7)
-        }
+        self.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("favoriteRepositoriesViewController.searchBar.placeholder", comment: ""), attributes: [.foregroundColor: UIColor.gray.withAlphaComponent(0.7)])
         
         // Set delegate
         self.searchBar.delegate = self
+    }
+    
+    /**
+     Deinit
+     */
+    deinit {
+        
+        // Cancel listener subscription
+        self.favoriteRepositoriesListener?.cancel()
     }
     
     // MARK: - Keyboard Notifications

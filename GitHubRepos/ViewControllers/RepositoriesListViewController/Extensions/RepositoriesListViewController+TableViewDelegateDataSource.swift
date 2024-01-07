@@ -103,16 +103,22 @@ extension RepositoriesListViewController: UITableViewDelegate {
         // Get repository
         if let repository = self.viewModel.didSelectRepresentable(at: indexPath) {
             
+            // Storyboard
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             
+            // Create details view controller
             let detailsViewController = storyboard.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
 
+            // Set repository
             detailsViewController.repository = repository
             
+            // Set delegate
             detailsViewController.delegate = self
             
+            // Set indexPath
             detailsViewController.indexPath = indexPath
             
+            // Push view controller
             self.navigationController?.pushViewController(detailsViewController, animated: true)
         }
     }

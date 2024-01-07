@@ -11,71 +11,104 @@ import Combine
 /// Favorite Repositories View Model
 class FavoriteRepositoriesViewModel {
     
+    /// Representables
     private var representables: [TableViewCellRepresentable]
     
+    /// Filtered representables
     private var filteredRepresentables: [TableViewCellRepresentable]
     
+    /// Repositories
     private var repositories: [Repository]
     
+    /// Search text
     private var searchText: String
     
+    /**
+     Initializer
+     */
     init() {
+        
+        // Default values
         self.representables = []
         self.filteredRepresentables = []
         self.repositories = []
         self.searchText = ""
-        
 
-        
+        // Build representables
         self.buildRepresentables()
     }
     
+    /**
+     Build representables
+     */
     private func buildRepresentables() {
         
+        // Clear all representables
         self.representables.removeAll()
         
+        // Iterate over each repository
         for (itemIndex, repository) in self.repositories.enumerated() {
             
+            // Representable
             let representable = RepositoryTableViewCellRepresentable(repository: repository)
             
+            // Set item data index
             representable.itemDataIndex = itemIndex
             
+            // Append to list
             self.representables.append(representable)
         }
         
         // Add empty cell if the list is empty
         if self.representables.isEmpty {
-            self.representables = [EmptyTableViewCellRepresentable(title: NSLocalizedString("usersListViewController.noUsersYet", comment: ""))]
+            self.representables = [EmptyTableViewCellRepresentable(title: NSLocalizedString("favoriteRepositoriesViewController.noDataYet.message", comment: ""))]
         }
         
+        // Filter content
         self.filterContent(searchText: self.searchText)
     }
     
-    
+    /**
+     Set data
+     - Parameter repositories: [Repository]
+     */
     func setData(repositories: [Repository]) {
         
+        // Set repositories
         self.repositories = repositories
         
+        // Build representables
         self.buildRepresentables()
-        
     }
     
+    /**
+     Set search text
+     - Parameter text: String
+     */
     func setSearchText(text: String) {
         
+        // Set search text
         self.searchText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         
+        // Filter content
         self.filterContent(searchText: self.searchText)
     }
     
+    /**
+     Filter content
+     - Parameter searchText: String
+     */
     private func filterContent(searchText: String) {
         
+        // Check if text is not empty
         guard !self.searchText.isEmpty else { return }
         
+        // Get filtered representables
         self.filteredRepresentables = self.representables.filter({ ($0 as? RepositoryTableViewCellRepresentable)?.search(text: searchText) ?? false })
         
         // Add empty cell if the list is empty
         if self.filteredRepresentables.isEmpty {
-            self.filteredRepresentables = [EmptyTableViewCellRepresentable(title: String(format: NSLocalizedString("usersListViewController.search.noResults", comment: ""), self.searchText))]
+            self.filteredRepresentables = [EmptyTableViewCellRepresentable(title: String(format: NSLocalizedString("favoriteRepositoriesViewController.search.noResults.message", comment: ""), self.searchText))]
         }
     }
     
@@ -92,14 +125,6 @@ class FavoriteRepositoriesViewModel {
         }
         
         return nil
-    }
-    
-    func reset() {
-        
-        self.repositories.removeAll()
-        self.representables.removeAll()
-        self.filteredRepresentables.removeAll()
-        self.searchText = ""
     }
     
     /**

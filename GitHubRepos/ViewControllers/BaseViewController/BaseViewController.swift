@@ -37,7 +37,7 @@ class BaseViewController: UIViewController {
         // Setup appearance
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .white
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.blue.withAlphaComponent(0.8)]
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.black.withAlphaComponent(1.0)]
         
         // Set appearance
         self.navigationController?.navigationBar.standardAppearance = appearance
@@ -63,18 +63,18 @@ class BaseViewController: UIViewController {
         self.loadingView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.loadingView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
-        // Setup loading indocator
-        let loadingIdicator = UIActivityIndicatorView(style: .large)
-        loadingIdicator.translatesAutoresizingMaskIntoConstraints = false
-        loadingIdicator.stopAnimating()
-        loadingIdicator.color = .white
+        // Setup loading indicator
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        loadingIndicator.stopAnimating()
+        loadingIndicator.color = .white
         
         // Add to view
-        self.loadingView.addSubview(loadingIdicator)
+        self.loadingView.addSubview(loadingIndicator)
         
         // Setup constraints
-        loadingIdicator.centerYAnchor.constraint(equalTo: self.loadingView.centerYAnchor).isActive = true
-        loadingIdicator.centerXAnchor.constraint(equalTo: self.loadingView.centerXAnchor).isActive = true
+        loadingIndicator.centerYAnchor.constraint(equalTo: self.loadingView.centerYAnchor).isActive = true
+        loadingIndicator.centerXAnchor.constraint(equalTo: self.loadingView.centerXAnchor).isActive = true
         
         // Hide the loading view initially
         self.loadingView.isHidden = true
@@ -121,9 +121,11 @@ class BaseViewController: UIViewController {
      */
     @objc func handleNotifications(_ notification: NSNotification) {
         
+        // Check if connection lost
         if notification.name.rawValue == NetworkingManager.Notifications.connectionLost.rawValue {
             
-            SystemUtils.showMessageAlert(title: "Connection Lost", message: "Internet connection Lost")
+            // Show alert
+            SystemUtils.showMessageAlert(title: NSLocalizedString("baseViewController.connectionLost.alert.title", comment: ""), message: NSLocalizedString("baseViewController.connectionLost.alert.message", comment: ""))
         }
     }
 }

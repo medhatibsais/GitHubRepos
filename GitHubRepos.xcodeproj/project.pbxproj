@@ -28,7 +28,7 @@
 		147FB5E92B49864A005DED7F /* FavoriteRepositoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147FB5E82B498649005DED7F /* FavoriteRepositoriesViewController.swift */; };
 		147FB5EC2B4987D0005DED7F /* FavoriteRepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147FB5EB2B4987D0005DED7F /* FavoriteRepositoriesViewModel.swift */; };
 		147FB5EF2B49892F005DED7F /* FavoriteRepositoriesViewController+TableViewDelegateDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147FB5EE2B49892F005DED7F /* FavoriteRepositoriesViewController+TableViewDelegateDataSource.swift */; };
-		147FB5F12B498974005DED7F /* FavoriteRepositoriesViewController+SearchBarDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147FB5F02B498974005DED7F /* FavoriteRepositoriesViewController+SearchBarDelegates.swift */; };
+		147FB5F12B498974005DED7F /* FavoriteRepositoriesViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147FB5F02B498974005DED7F /* FavoriteRepositoriesViewController+Delegates.swift */; };
 		147FB5F32B4998A9005DED7F /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147FB5F22B4998A9005DED7F /* Searchable.swift */; };
 		14C7B5292B47FB26007904DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7B5282B47FB26007904DE /* AppDelegate.swift */; };
 		14C7B52B2B47FB26007904DE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C7B52A2B47FB26007904DE /* SceneDelegate.swift */; };
@@ -73,7 +73,7 @@
 		147FB5E82B498649005DED7F /* FavoriteRepositoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepositoriesViewController.swift; sourceTree = "<group>"; };
 		147FB5EB2B4987D0005DED7F /* FavoriteRepositoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepositoriesViewModel.swift; sourceTree = "<group>"; };
 		147FB5EE2B49892F005DED7F /* FavoriteRepositoriesViewController+TableViewDelegateDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteRepositoriesViewController+TableViewDelegateDataSource.swift"; sourceTree = "<group>"; };
-		147FB5F02B498974005DED7F /* FavoriteRepositoriesViewController+SearchBarDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteRepositoriesViewController+SearchBarDelegates.swift"; sourceTree = "<group>"; };
+		147FB5F02B498974005DED7F /* FavoriteRepositoriesViewController+Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteRepositoriesViewController+Delegates.swift"; sourceTree = "<group>"; };
 		147FB5F22B4998A9005DED7F /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		14C7B5252B47FB26007904DE /* GitHubRepos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubRepos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14C7B5282B47FB26007904DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -124,8 +124,8 @@
 		147FB5B62B48AC5B005DED7F /* LoadingTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				147FB5B72B48AC5B005DED7F /* LoadingTableViewCell.xib */,
 				147FB5B82B48AC5B005DED7F /* LoadingTableViewCell.swift */,
+				147FB5B72B48AC5B005DED7F /* LoadingTableViewCell.xib */,
 			);
 			path = LoadingTableViewCell;
 			sourceTree = "<group>";
@@ -168,8 +168,8 @@
 			isa = PBXGroup;
 			children = (
 				147FB5CE2B495589005DED7F /* DetailsViewController.swift */,
-				147FB5DC2B49650C005DED7F /* Extensions */,
 				147FB5D92B496442005DED7F /* ViewModel */,
+				147FB5DC2B49650C005DED7F /* Extensions */,
 				147FB5D02B49565F005DED7F /* TableViewCells */,
 			);
 			path = DetailsViewController;
@@ -262,9 +262,18 @@
 			isa = PBXGroup;
 			children = (
 				147FB5EE2B49892F005DED7F /* FavoriteRepositoriesViewController+TableViewDelegateDataSource.swift */,
-				147FB5F02B498974005DED7F /* FavoriteRepositoriesViewController+SearchBarDelegates.swift */,
+				147FB5F02B498974005DED7F /* FavoriteRepositoriesViewController+Delegates.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		147FB5F42B4A6E27005DED7F /* GenericTableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				147FB5B32B48AC5A005DED7F /* EmptyTableViewCell */,
+				147FB5B62B48AC5B005DED7F /* LoadingTableViewCell */,
+			);
+			path = GenericTableViewCells;
 			sourceTree = "<group>";
 		};
 		14C7B51C2B47FB25007904DE = {
@@ -289,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				14C7B5362B47FB29007904DE /* Info.plist */,
+				147FB5F42B4A6E27005DED7F /* GenericTableViewCells */,
 				14C7B5552B485AE6007904DE /* Storyboards */,
 				14C7B5512B485A91007904DE /* ViewControllers */,
 				14C7B54C2B482C5D007904DE /* Entities */,
@@ -369,10 +379,10 @@
 		14C7B5512B485A91007904DE /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				147FB5E72B498637005DED7F /* FavoriteRepositoriesViewController */,
-				147FB5CD2B495571005DED7F /* DetailsViewController */,
 				14C7B5562B485BFE007904DE /* BaseViewController */,
 				14C7B5522B485ABB007904DE /* RepositoriesListViewController */,
+				147FB5E72B498637005DED7F /* FavoriteRepositoriesViewController */,
+				147FB5CD2B495571005DED7F /* DetailsViewController */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -407,8 +417,6 @@
 		14C7B55E2B486340007904DE /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				147FB5B32B48AC5A005DED7F /* EmptyTableViewCell */,
-				147FB5B62B48AC5B005DED7F /* LoadingTableViewCell */,
 				14C7B55F2B48634A007904DE /* RepositoryTableViewCell */,
 			);
 			path = TableViewCells;
@@ -435,10 +443,10 @@
 			isa = PBXGroup;
 			children = (
 				14C7B5682B488E66007904DE /* TableViewCellRepresentable.swift */,
+				14C7B5642B488E2F007904DE /* RepositoryTableViewCellRepresentable */,
 				147FB5D62B49578F005DED7F /* DetailsTableViewCellRepresentable */,
 				147FB5C22B48AD4C005DED7F /* EmptyTableViewCellRepresentable */,
 				147FB5C02B48AD4C005DED7F /* LoadingTableViewCellRepresentable */,
-				14C7B5642B488E2F007904DE /* RepositoryTableViewCellRepresentable */,
 			);
 			path = Representables;
 			sourceTree = "<group>";
@@ -601,7 +609,7 @@
 				147FB5B92B48AC5B005DED7F /* EmptyTableViewCell.swift in Sources */,
 				147FB5CA2B48B4E0005DED7F /* RepositoriesListViewController+Delegates.swift in Sources */,
 				147FB5CC2B48B53B005DED7F /* RepositoriesListViewController+Model.swift in Sources */,
-				147FB5F12B498974005DED7F /* FavoriteRepositoriesViewController+SearchBarDelegates.swift in Sources */,
+				147FB5F12B498974005DED7F /* FavoriteRepositoriesViewController+Delegates.swift in Sources */,
 				147FB5DB2B496454005DED7F /* DetailsViewModel.swift in Sources */,
 				147FB5D82B495799005DED7F /* DetailsTableViewCellRepresentable.swift in Sources */,
 				14C7B5502B48448E007904DE /* User.swift in Sources */,

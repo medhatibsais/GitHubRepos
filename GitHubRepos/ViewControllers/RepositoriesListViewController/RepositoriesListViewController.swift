@@ -10,41 +10,59 @@ import UIKit
 /// Repositories List View Controller
 class RepositoriesListViewController: BaseViewController {
     
+    /// Search bar
     @IBOutlet private weak var searchBar: UISearchBar!
     
+    /// Table view
     @IBOutlet private(set) weak var tableView: UITableView!
     
+    /// Table view bottom constraint
     @IBOutlet private weak var tableViewBottomConstraint: NSLayoutConstraint!
     
-    
+    /// View model
     private(set) var viewModel: RepositoriesListViewModel!
     
+    /// Calendar
     private var calendar: Calendar!
     
+    /**
+     View did load
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup calendar
         self.calendar = Calendar(identifier: .gregorian)
         self.calendar.timeZone = .current
         
-        self.title = "Repositories"
+        // Se title
+        self.title = NSLocalizedString("repositoriesListViewController.title", comment: "")
         
+        // Init view model
         self.viewModel = RepositoriesListViewModel()
         
+        // Setup bar button items
         self.setupBarButtonItems()
         
+        // Setup table view
         self.setupTableView()
         
+        // Setup search bar
         self.setupSearchBar()
         
+        // Date
         let date = self.calendar.date(byAdding: .month, value: -1, to: Date()) ?? Date()
         
+        // Update selected date
         self.viewModel.updateSelectedDate(date: date)
         
+        // Check if internet is reachable
         if NetworkingManager.shared.isNetworkReachable {
          
+            // Show loading view
             self.showLoadingView(true)
             
+            // Load repositories
             self.loadRepositories(for: date)
         }
     }
@@ -69,81 +87,101 @@ class RepositoriesListViewController: BaseViewController {
         self.unregisterForKeyboardNotifications()
     }
     
+    /**
+     Setup bar button items
+     */
     private func setupBarButtonItems() {
         
+        // Create bar button item
         let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease.circle"), style: .plain, target: self, action: #selector(self.didClickRightBarButtonItem(_:)))
         
+        // Disable button initially
         rightBarButtonItem.isEnabled = false
         
+        // Set right bar button item
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
+    /**
+     Did click right bar button item
+     - Parameter sender: UIBarButtonItem
+     */
     @objc private func didClickRightBarButtonItem(_ sender: UIBarButtonItem) {
         
-        let actionSheet = UIAlertController(title: "Select period", message: "Choose the date creation for your presented information", preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(title: "Before 1 day", style: .default, handler: { [weak self] _ in
+        /**
+         Load repositories
+         - Parameter component: Calendar component
+         - Parameter value: Int
+         */
+        func loadRepositories(with component: Calendar.Component, value: Int) {
             
-            guard let self = self else { return }
-            
+            // Reset view model
             self.viewModel.reset()
             
+            // Disable right bar button item
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            
+            // Show loading view
             self.showLoadingView(true)
             
-            let date = self.calendar.date(byAdding: .day, value: -1, to: Date()) ?? Date()
+            // Date
+            let date = self.calendar.date(byAdding: component, value: value, to: Date()) ?? Date()
             
+            // Update selected date
             self.viewModel.updateSelectedDate(date: date)
             
+            // Scroll to top
             self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             
+            // Load repositories
             self.loadRepositories(for: date)
-        }))
+        }
         
-        actionSheet.addAction(UIAlertAction(title: "Before 1 week", style: .default, handler: { [weak self] _ in
+        // Action sheet
+        let actionSheet = UIAlertController(title: NSLocalizedString("repositoriesListViewController.actionSheet.title", comment: ""), message: NSLocalizedString("repositoriesListViewController.actionSheet.message", comment: ""), preferredStyle: .actionSheet)
+        
+        // Add action
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Day.action.title", comment: ""), style: .default, handler: { [weak self] _ in
             
+            // self
             guard let self = self else { return }
             
-            self.viewModel.reset()
-            
-            self.showLoadingView(true)
-            
-            let date = self.calendar.date(byAdding: .weekOfMonth, value: -1, to: Date()) ?? Date()
-            
-            self.viewModel.updateSelectedDate(date: date)
-            
-            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            
-            self.loadRepositories(for: date)
+            // Load repositories
+            loadRepositories(with: .day, value: -1)
         }))
         
-        actionSheet.addAction(UIAlertAction(title: "Before 1 month", style: .default, handler: { [weak self] _ in
+        // Add action
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Week.action.title", comment: ""), style: .default, handler: { [weak self] _ in
             
+            // self
             guard let self = self else { return }
             
-            self.viewModel.reset()
-            
-            self.showLoadingView(true)
-            
-            let date = self.calendar.date(byAdding: .month, value: -1, to: Date()) ?? Date()
-            
-            self.viewModel.updateSelectedDate(date: date)
-            
-            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            
-            self.loadRepositories(for: date)
+            // Load repositories
+            loadRepositories(with: .weekOfMonth, value: -1)
         }))
         
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        // Add action
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Month.action.title", comment: ""), style: .default, handler: { [weak self] _ in
+            
+            // self
+            guard let self = self else { return }
+            
+            // Load repositories
+            loadRepositories(with: .month, value: -1)
+        }))
         
+        // Add action
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.cancel.action.title", comment: ""), style: .cancel))
+        
+        // Set popover item
         if #available(iOS 16.0, *) {
             actionSheet.popoverPresentationController?.sourceItem = sender
         } else {
-            // Fallback on earlier versions
             actionSheet.popoverPresentationController?.barButtonItem = sender
         }
         
+        // Present
         self.present(actionSheet, animated: true)
-
     }
     
     /**
@@ -170,14 +208,7 @@ class RepositoriesListViewController: BaseViewController {
     private func setupSearchBar() {
         
         // Setup search bar
-//        self.searchBar.barTintColor = .black
-//        self.searchBar.searchTextField.backgroundColor = .black
-        self.searchBar.searchTextField.textColor = .white
-        self.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("usersListViewController.searchBar.placeholder", comment: ""), attributes: [.foregroundColor: UIColor.white.withAlphaComponent(0.7)])
-        
-        if let searchImageView = self.searchBar.searchTextField.leftView as? UIImageView {
-            searchImageView.tintColor = UIColor.white.withAlphaComponent(0.7)
-        }
+        self.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("repositoriesListViewController.searchBar.placeholder", comment: ""), attributes: [.foregroundColor: UIColor.gray.withAlphaComponent(0.7)])
         
         // Set delegate
         self.searchBar.delegate = self
@@ -185,17 +216,30 @@ class RepositoriesListViewController: BaseViewController {
     
     // MARK: - Notifications
     
+    /**
+     Handle notifications
+     - Parameter notification: NSNotification
+     */
     override func handleNotifications(_ notification: NSNotification) {
         
+        // Check if name is connection established
         if notification.name.rawValue == NetworkingManager.Notifications.connectionEstablished.rawValue {
             
+            // Handle internet connection back
             if self.viewModel.handleInternetConnectionBack() {
+                
+                // Load repositories
                 self.loadRepositories(for: self.viewModel.selectedDate)
             }
         }
+        
+        // Check if name is connection lost
         else if notification.name.rawValue == NetworkingManager.Notifications.connectionLost.rawValue {
             
+            // Handle no internet connection
             if self.viewModel.handleNoInternetConnection() {
+                
+                // Reload table view
                 self.tableView.reloadData()
             }
             else {

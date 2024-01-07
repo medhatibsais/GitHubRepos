@@ -50,6 +50,7 @@ class NetworkingManager {
      */
     private init() {
         
+        // Start listening to network updates
         self.networkReachabilityManager.startListening(onUpdatePerforming: self.networkReachabilityListener)
     }
 }

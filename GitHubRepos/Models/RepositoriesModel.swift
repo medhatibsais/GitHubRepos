@@ -25,14 +25,25 @@ class RepositoriesModel {
         case items
     }
     
+    /// Maximum items per page
     static let maximumItemsPerPage: Int = 30
     
+    /**
+     Search
+     - Parameter date: Date
+     - Parameter order: Repository.Order
+     - Parameter sortBy: Repository.Sort
+     - Parameter pageNumber: Int
+     - Parameter completion: Completion block
+     */
     class func search(date: Date, order: Repository.Order, sortBy: Repository.Sort, pageNumber: Int, completion: @escaping (Result<[Repository], Error>) -> Void) {
         
+        // Date formatter
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
         dateFormatter.timeZone = .current
         
+        // Setup parameters
         var parameters = Parameters()
         parameters[RequestTags.order.rawValue] = order.rawValue
         parameters[RequestTags.sort.rawValue] = sortBy.rawValue
@@ -40,6 +51,7 @@ class RepositoriesModel {
         parameters[RequestTags.page.rawValue] = pageNumber
         parameters[RequestTags.query.rawValue] = dateFormatter.string(from: date)
         
+        // Request data
         Session.default.request(RepositoriesRouter.search(parameters: parameters)).response { response in
             
             switch response.result {
@@ -87,8 +99,6 @@ class RepositoriesModel {
                 // Call completion
                 completion(.failure(error))
             }
-            
         }
-        
     }
 }

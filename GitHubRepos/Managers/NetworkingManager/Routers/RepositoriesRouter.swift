@@ -52,6 +52,7 @@ enum RepositoriesRouter: URLRequestConvertible {
         switch self {
         case .search(let parameters):
             
+            // Encode
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
         }
         

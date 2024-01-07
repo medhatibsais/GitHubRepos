@@ -6,5 +6,45 @@
   
 */
 
+/// General
+"general.username"                                                      = "Username: ";
+"general.repository.name"                                               = "Repository name: ";
+"general.repository.starsRate"                                          = "Star rating: ";
+"general.repository.forksCount"                                         = "Forks count: ";
+"general.repository.creationDate"                                       = "Creation date: ";
+"general.repository.htmlURL"                                            = "URL: ";
+"general.repository.description"                                        = "Description: ";
+
 /// Alerts
-"alerts.actions.ok.title"                               = "OK";
+"alerts.actions.ok.title"                                               = "OK";
+
+/// Repository
+"repository.description.default"                                        = "Hey!, this is a new repository";
+
+/// Base View Controller
+"baseViewController.connectionLost.alert.title"                         = "Connection Lost";
+"baseViewController.connectionLost.alert.message"                       = "Internet connection Lost";
+
+/// Repositories List View Controller
+"repositoriesListViewController.title"                                  = "Repositories";
+"repositoriesListViewController.actionSheet.title"                      = "Select period";
+"repositoriesListViewController.actionSheet.message"                    = "Choose the date creation for your presented information";
+"repositoriesListViewController.actionSheet.1Day.action.title"          = "Before 1 day";
+"repositoriesListViewController.actionSheet.1Week.action.title"         = "Before 1 week";
+"repositoriesListViewController.actionSheet.1Month.action.title"        = "Before 1 month";
+"repositoriesListViewController.actionSheet.cancel.action.title"        = "Cancel";
+"repositoriesListViewController.searchBar.placeholder"                  = "Search by repository name";
+"repositoriesListViewController.alert.loadingFailure.title"             = "Failed to load data";
+"repositoriesListViewController.noDataYet.message"                      = "Data is empty, select another period";
+"repositoriesListViewController.search.noResults.message"               = "Search result is empty, try another repository name please!";
+"repositoriesListViewController.internetLost.message"                   = "No internet connection, you still can go to favorites tab if you have added some";
+
+/// Favorite Repositories View Controller
+"favoriteRepositoriesViewController.title"                              = "Favorites";
+"favoriteRepositoriesViewController.searchBar.placeholder"              = "Search by repository name";
+"favoriteRepositoriesViewController.search.noResults.message"           = "Search result is empty, try another repository name please!";
+"favoriteRepositoriesViewController.noDataYet.message"                  = "No repositories added to Favorites yet!";
+
+/// Details View Controller
+"detailsViewController.error.invalidURL.alert.title"                    = "Error";
+"detailsViewController.error.invalidURL.alert.message"                  = "URL can't be opened, please check if its a valid one";

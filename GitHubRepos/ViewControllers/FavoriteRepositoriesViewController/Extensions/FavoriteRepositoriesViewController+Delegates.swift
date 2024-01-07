@@ -1,5 +1,5 @@
 //
-//  FavoriteRepositoriesViewController+SearchBarDelegates.swift
+//  FavoriteRepositoriesViewController+Delegates.swift
 //  GitHubRepos
 //
 //  Created by Medhat Ibsais on 06/01/2024.
@@ -32,4 +32,17 @@ extension FavoriteRepositoriesViewController: UISearchBarDelegate {
     }
 }
 
-
+// MARK: - Details View Controller Delegate
+extension FavoriteRepositoriesViewController: DetailsViewControllerDelegate {
+    
+    /**
+     Did update favorite status for
+     - Parameter repository: Repository
+     - Parameter indexPath: IndexPath
+     */
+    func detailsViewController(didUpdateFavoriteStatusFor repository: Repository, at indexPath: IndexPath) {
+        
+        // Pop view controller
+        self.navigationController?.popViewController(animated: true)
+    }
+}

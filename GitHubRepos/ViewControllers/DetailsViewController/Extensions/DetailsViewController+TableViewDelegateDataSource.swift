@@ -54,17 +54,5 @@ extension DetailsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
-    
-    /**
-     Did select row
-     */
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        // Get user
-//        if let user = self.viewModel.didSelectRepresentable(at: indexPath) {
-//
-//
-//        }
-    }
 }
 
