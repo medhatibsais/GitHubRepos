@@ -5,7 +5,7 @@
 //  Created by Medhat Ibsais on 06/01/2024.
 //
 
-import Foundation
+import UIKit
 
 extension RepositoriesListViewController {
     
@@ -28,13 +28,36 @@ extension RepositoriesListViewController {
                 // Set data
                 self.viewModel.setData(repositories: repositories)
                 
-                // Reload table view
-                self.tableView.reloadData()
+                // Reload table view data
+                self.reloadTableViewData()
+                
+                // Check if search bar is hidden
+                if self.searchBarTopConstraint.constant != 0 {
+                 
+                    // Show search bar
+                    self.searchBarTopConstraint.constant = 0
+                    
+                    // Animate showing the search bar
+                    UIView.animate(withDuration: 0.5) { [self] in
+                        
+                        // Layout the view again
+                        self.view.layoutIfNeeded()
+                    }
+                }
                 
             case .failure(let error):
                 
-                // Show alert message
-                SystemUtils.showMessageAlert(title: NSLocalizedString("repositoriesListViewController.alert.loadingFailure.title", comment: ""), message: error.localizedDescription)
+                // Handle failed to load data
+                if self.viewModel.handleFailedToLoadData(error: error) {
+                    
+                    // Reload table view data
+                    self.reloadTableViewData()
+                }
+                else {
+                 
+                    // Show alert message
+                    SystemUtils.showMessageAlert(title: NSLocalizedString("repositoriesListViewController.alert.loadingFailure.title", comment: ""), message: error.localizedDescription)
+                }
             }
             
             // Hide loading

@@ -38,6 +38,7 @@
 "repositoriesListViewController.noDataYet.message"                      = "Data is empty, select another period";
 "repositoriesListViewController.search.noResults.message"               = "Search result is empty, try another repository name please!";
 "repositoriesListViewController.internetLost.message"                   = "No internet connection, you still can go to favorites tab if you have added some";
+"repositoriesListViewController.failedToLoadData.message"               = "Failed to load data";
 
 /// Favorite Repositories View Controller
 "favoriteRepositoriesViewController.title"                              = "Favorites";

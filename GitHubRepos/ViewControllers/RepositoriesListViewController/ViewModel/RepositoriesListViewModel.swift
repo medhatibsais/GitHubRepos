@@ -19,6 +19,9 @@ class RepositoriesListViewModel {
     /// Repositories
     private var repositories: [Repository]
     
+    /// Request status
+    private var requestStatus: NetworkingManager.RequestStatus
+    
     /// Search text
     private var searchText: String
     
@@ -27,6 +30,11 @@ class RepositoriesListViewModel {
     
     /// Selected date
     private(set) var selectedDate: Date
+    
+    /// Is data loading
+    var isDataLoading: Bool {
+        return self.requestStatus == .loading
+    }
     
     /**
      Initializer
@@ -40,6 +48,7 @@ class RepositoriesListViewModel {
         self.searchText = ""
         self.nextPageNumber = 1
         self.selectedDate = Date()
+        self.requestStatus = .loading
     }
     
     /**
@@ -91,6 +100,9 @@ class RepositoriesListViewModel {
      - Parameter repositories: [Repository]
      */
     func setData(repositories: [Repository]) {
+        
+        // Set request status to success
+        self.requestStatus = .success
         
         // Increment next page number
         self.nextPageNumber += 1
@@ -176,6 +188,28 @@ class RepositoriesListViewModel {
     }
     
     /**
+     Handle failed to load data
+     - Parameter error: Error
+     - Returns: Bool
+     */
+    func handleFailedToLoadData(error: Error) -> Bool {
+        
+        // Set request status to failed
+        self.requestStatus = .failed
+        
+        // Check if representables is empty or, first representable is loading cell or empty cell, then handle showing some info, because data is not appearing on view yet
+        if self.representables.isEmpty || self.representables.first is LoadingTableViewCellRepresentable || self.representables.first is EmptyTableViewCellRepresentable {
+        
+            // Add empty cell with title
+            self.representables = [EmptyTableViewCellRepresentable(title: NSLocalizedString("repositoriesListViewController.failedToLoadData.message", comment: "") + "\n" + error.localizedDescription)]
+            
+            return true
+        }
+        
+        return false
+    }
+    
+    /**
      Reset
      */
     func reset() {
@@ -184,6 +218,7 @@ class RepositoriesListViewModel {
         self.repositories.removeAll()
         self.representables.removeAll()
         self.filteredRepresentables.removeAll()
+        self.requestStatus = .loading
     }
     
     /**
@@ -241,6 +276,9 @@ class RepositoriesListViewModel {
      - Returns: Bool
      */
     func handleNoInternetConnection() -> Bool {
+        
+        // Set request status to failed
+        self.requestStatus = .failed
         
         // Check if representables is empty or, first representable is loading cell or empty cell, then handle showing some info, because data is not appearing on view yet
         if self.representables.isEmpty || self.representables.first is LoadingTableViewCellRepresentable || self.representables.first is EmptyTableViewCellRepresentable {

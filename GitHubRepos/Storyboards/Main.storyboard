@@ -59,6 +59,7 @@
                     <navigationItem key="navigationItem" id="jmN-Qb-rzC"/>
                     <connections>
                         <outlet property="searchBar" destination="y8F-50-4r4" id="hkZ-tQ-ZFD"/>
+                        <outlet property="searchBarTopConstraint" destination="NPl-bz-8BL" id="6er-2u-wew"/>
                         <outlet property="tableView" destination="alb-3d-zT2" id="kqR-Gr-OlB"/>
                         <outlet property="tableViewBottomConstraint" destination="F3y-xr-Z3m" id="wFl-xP-FOi"/>
                     </connections>

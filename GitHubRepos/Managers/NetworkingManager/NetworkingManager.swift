@@ -11,6 +11,13 @@ import Alamofire
 /// Networking Manager
 class NetworkingManager {
     
+    /// Request Status
+    enum RequestStatus {
+        case loading
+        case success
+        case failed
+    }
+    
     /// Notifications
     enum Notifications: String {
         case connectionLost

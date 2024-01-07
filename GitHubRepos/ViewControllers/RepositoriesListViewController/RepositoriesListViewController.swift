@@ -13,6 +13,9 @@ class RepositoriesListViewController: BaseViewController {
     /// Search bar
     @IBOutlet private weak var searchBar: UISearchBar!
     
+    /// Search bar top constraint
+    @IBOutlet private(set) weak var searchBarTopConstraint: NSLayoutConstraint!
+    
     /// Table view
     @IBOutlet private(set) weak var tableView: UITableView!
     
@@ -21,6 +24,9 @@ class RepositoriesListViewController: BaseViewController {
     
     /// View model
     private(set) var viewModel: RepositoriesListViewModel!
+    
+    /// Refresh control
+    private(set) var refreshControl: UIRefreshControl!
     
     /// Calendar
     private var calendar: Calendar!
@@ -141,30 +147,21 @@ class RepositoriesListViewController: BaseViewController {
         let actionSheet = UIAlertController(title: NSLocalizedString("repositoriesListViewController.actionSheet.title", comment: ""), message: NSLocalizedString("repositoriesListViewController.actionSheet.message", comment: ""), preferredStyle: .actionSheet)
         
         // Add action
-        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Day.action.title", comment: ""), style: .default, handler: { [weak self] _ in
-            
-            // self
-            guard let self = self else { return }
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Day.action.title", comment: ""), style: .default, handler: { _ in
             
             // Load repositories
             loadRepositories(with: .day, value: -1)
         }))
         
         // Add action
-        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Week.action.title", comment: ""), style: .default, handler: { [weak self] _ in
-            
-            // self
-            guard let self = self else { return }
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Week.action.title", comment: ""), style: .default, handler: { _ in
             
             // Load repositories
             loadRepositories(with: .weekOfMonth, value: -1)
         }))
         
         // Add action
-        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Month.action.title", comment: ""), style: .default, handler: { [weak self] _ in
-            
-            // self
-            guard let self = self else { return }
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("repositoriesListViewController.actionSheet.1Month.action.title", comment: ""), style: .default, handler: { _ in
             
             // Load repositories
             loadRepositories(with: .month, value: -1)
@@ -189,8 +186,15 @@ class RepositoriesListViewController: BaseViewController {
      */
     private func setupTableView() {
         
+        // Setup refresh control
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.addTarget(self, action: #selector(self.willRefreshTableView), for: .valueChanged)
+        
         // Set table view separator style to none
         self.tableView.separatorStyle = .none
+        
+        // Set refresh control
+        self.tableView.refreshControl = self.refreshControl
         
         // Set delegate and data source
         self.tableView.delegate = self
@@ -207,11 +211,55 @@ class RepositoriesListViewController: BaseViewController {
      */
     private func setupSearchBar() {
         
+        // Hide search bar initially
+        self.searchBarTopConstraint.constant = -self.searchBar.frame.height
+        
         // Setup search bar
         self.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("repositoriesListViewController.searchBar.placeholder", comment: ""), attributes: [.foregroundColor: UIColor.gray.withAlphaComponent(0.7)])
         
         // Set delegate
         self.searchBar.delegate = self
+    }
+    
+    /**
+     Will refresh table view
+     */
+    @objc private func willRefreshTableView() {
+        
+        // Check if data is not loading
+        guard !self.viewModel.isDataLoading, NetworkingManager.shared.isNetworkReachable else {
+            
+            // End refreshing if the network is lost
+            if !NetworkingManager.shared.isNetworkReachable {
+                self.refreshControl.endRefreshing()
+            }
+            
+            return
+        }
+        
+        // Reset view model
+        self.viewModel.reset()
+        
+        // Disable right bar button item
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        // Load repositories
+        self.loadRepositories(for: self.viewModel.selectedDate)
+    }
+    
+    /**
+     Reload table view data
+     */
+    func reloadTableViewData() {
+        
+        DispatchQueue.main.async {
+         
+            // Reload table view
+            self.tableView.reloadData()
+            
+            // End refreshing
+            self.refreshControl.endRefreshing()
+        }
     }
     
     // MARK: - Notifications
@@ -239,8 +287,8 @@ class RepositoriesListViewController: BaseViewController {
             // Handle no internet connection
             if self.viewModel.handleNoInternetConnection() {
                 
-                // Reload table view
-                self.tableView.reloadData()
+                // Reload table view data
+                self.reloadTableViewData()
             }
             else {
                 super.handleNotifications(notification)

@@ -298,7 +298,6 @@
 			isa = PBXGroup;
 			children = (
 				14C7B5362B47FB29007904DE /* Info.plist */,
-				147FB5F42B4A6E27005DED7F /* GenericTableViewCells */,
 				14C7B5552B485AE6007904DE /* Storyboards */,
 				14C7B5512B485A91007904DE /* ViewControllers */,
 				14C7B54C2B482C5D007904DE /* Entities */,
@@ -306,6 +305,7 @@
 				14C7B5432B482390007904DE /* Resources */,
 				14C7B5402B482158007904DE /* SystemUtils */,
 				14C7B53C2B481696007904DE /* Managers */,
+				147FB5F42B4A6E27005DED7F /* GenericTableViewCells */,
 			);
 			path = GitHubRepos;
 			sourceTree = "<group>";

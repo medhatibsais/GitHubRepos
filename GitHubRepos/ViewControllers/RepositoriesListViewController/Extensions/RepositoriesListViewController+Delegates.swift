@@ -19,7 +19,7 @@ extension RepositoriesListViewController: UISearchBarDelegate {
         self.viewModel.setSearchText(text: searchText)
         
         // Reload table view data
-        self.tableView.reloadData()
+        self.reloadTableViewData()
     }
     
     /**
