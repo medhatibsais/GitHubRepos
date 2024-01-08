@@ -17,3 +17,5 @@ The app is responsible for displaying repositories from GitHub depending on crea
   - Add skeleton for data while requesting the API
   - Support dark mode
   - Add option to the user to select what data from the repository he needs to search for.
+  - Customize the networking layer to do some actions on its behalf like parsing, and adapt the request before its leaves it and add some info to the headers
+  - Create an error manager to handle some familiar errors before reaching the views
